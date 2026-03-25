@@ -31,7 +31,8 @@ import '../styles/global.css';
       <slot />
     </main>
     <footer class="site-footer">
-      <p>Forged in the <a href="https://meddleshop.com" target="_blank" rel="noopener noreferrer" class="footer-link">Meddle Shop</a></p>
+      <p>Forged in the <a href="https://meddleshop.com" target="_blank" rel="noopener noreferrer" class="footer-link"><img src="/meddleshop.png" alt="Meddle Shop" class="meddleshop-icon" /> Meddle Shop</a></p>
+      <p><a href="https://bsky.app/profile/mediaor.com" target="_blank" rel="noopener noreferrer" class="footer-link">Bluesky</a></p>
     </footer>
   </body>
 </html>
@@ -88,5 +89,13 @@ import '../styles/global.css';
   .footer-link {
     color: var(--color-accent);
     font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .meddleshop-icon {
+    height: 20px;
+    width: auto;
   }
 </style>
