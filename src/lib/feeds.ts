@@ -11,7 +11,7 @@ export interface Article {
 }
 
 const parser = new Parser({
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     'User-Agent': 'Mediaor/1.0 (news aggregator)',
   },
@@ -56,19 +56,24 @@ export async function fetchFeed(xmlUrl: string, sourceTitle: string, sourceHtmlU
 export async function fetchAllFeeds(
   feeds: { title: string; xmlUrl: string; htmlUrl?: string }[]
 ): Promise<Article[]> {
-  const results = await Promise.allSettled(
-    feeds.map((f) => fetchFeed(f.xmlUrl, f.title, f.htmlUrl))
-  );
-
   const articles: Article[] = [];
   const seenUrls = new Set<string>();
+  const BATCH_SIZE = 20;
 
-  for (const result of results) {
-    if (result.status === 'fulfilled') {
-      for (const article of result.value) {
-        if (!seenUrls.has(article.link)) {
-          seenUrls.add(article.link);
-          articles.push(article);
+  // Fetch in batches to avoid network congestion causing timeouts
+  for (let i = 0; i < feeds.length; i += BATCH_SIZE) {
+    const batch = feeds.slice(i, i + BATCH_SIZE);
+    const results = await Promise.allSettled(
+      batch.map((f) => fetchFeed(f.xmlUrl, f.title, f.htmlUrl))
+    );
+
+    for (const result of results) {
+      if (result.status === 'fulfilled') {
+        for (const article of result.value) {
+          if (!seenUrls.has(article.link)) {
+            seenUrls.add(article.link);
+            articles.push(article);
+          }
         }
       }
     }

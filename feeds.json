@@ -1,3 +1,19 @@
 {
-  "feeds": []
+  "feeds": [
+    {
+      "title": "Music Ally",
+      "xmlUrl": "https://musically.com/feed/",
+      "htmlUrl": "https://musically.com"
+    },
+    {
+      "title": "Digital Music News",
+      "xmlUrl": "https://www.digitalmusicnews.com/feed/",
+      "htmlUrl": "https://www.digitalmusicnews.com"
+    },
+    {
+      "title": "Billboard",
+      "xmlUrl": "https://www.billboard.com/feed/",
+      "htmlUrl": "https://www.billboard.com"
+    }
+  ]
 }
