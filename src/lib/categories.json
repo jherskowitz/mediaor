@@ -3,22 +3,30 @@
     {
       "name": "Music Tech",
       "slug": "music-tech",
-      "keywords": ["music tech", "audio tech", "DAW", "plugin", "synth", "synthesizer", "MIDI", "audio software", "music software", "music app", "soundboard", "audio engineering", "music production", "beat making", "sampling"]
+      "keywords": ["music tech", "audio tech", "DAW", "plugin", "synth", "synthesizer", "MIDI", "audio software", "music software", "soundboard", "audio engineering", "music production", "beat maker", "beat making", "sampling", "music ai", "ai music", "deepfake", "stem separation", "music generation"]
     },
     {
       "name": "Music",
       "slug": "music",
-      "keywords": ["music", "album", "song", "artist", "tour", "concert", "vinyl", "playlist", "label", "record label", "streaming", "Spotify", "Grammy", "rapper", "singer", "band", "musician", "lyric", "remix", "DJ", "festival", "hip-hop", "rock", "pop music", "jazz", "R&B", "country music", "punk"]
+      "keywords": ["music", "album", "song", "songs", "artist", "artists", "tour", "concert", "vinyl", "playlist", "label", "record label", "streaming", "Spotify", "Apple Music", "Grammy", "rapper", "singer", "band", "musician", "lyric", "lyrics", "remix", "DJ", "festival", "hip-hop", "rock", "pop music", "jazz", "R&B", "country music", "punk", "BTS", "K-pop", "Kpop", "Billboard", "chart", "charts", "release", "single", "record deal", "royalties", "royalty", "publish", "catalog", "catalogue", "sync", "Ticketmaster", "live nation", "gig", "venue", "Tidal", "Deezer", "SoundCloud", "Bandcamp", "TikTok", "Fortnite", "emote", "soundtrack"]
     },
     {
       "name": "Tech",
       "slug": "tech",
-      "keywords": ["AI", "artificial intelligence", "software", "startup", "app", "data", "cloud", "chip", "robot", "gadget", "developer", "coding", "blockchain", "crypto", "API", "machine learning", "algorithm", "open source", "SaaS", "platform"]
+      "keywords": ["artificial intelligence", "software", "startup", "startups", "cloud computing", "chip", "chipmaker", "robot", "robotics", "gadget", "developer", "coding", "blockchain", "crypto", "machine learning", "algorithm", "open source", "SaaS", "cybersecurity", "data breach", "GPU", "Nvidia", "OpenAI", "ChatGPT", "Google AI", "Meta AI", "Anthropic"]
     },
     {
       "name": "Industry",
       "slug": "industry",
-      "keywords": ["market", "deal", "merger", "revenue", "CEO", "funding", "IPO", "earnings", "layoff", "acquisition", "valuation", "investor", "stock", "quarterly", "profit", "lawsuit", "regulation", "copyright", "licensing", "royalt"]
+      "keywords": ["merger", "revenue", "funding", "IPO", "earnings", "layoff", "layoffs", "acquisition", "valuation", "investor", "quarterly", "profit", "lawsuit", "regulation", "copyright", "licensing", "securitisation", "securitization", "settlement", "antitrust", "fair use", "infringement"]
     }
+  ],
+  "musicSources": [
+    "Billboard", "Billboard Pro", "Music Ally", "Digital Music News", "Music Business Worldwide",
+    "Spotify", "Spotify for Artists", "MIDiA Research Blog", "Platform & Stream", "CMU",
+    "Lefsetz Letter", "Hypebot", "RIAA", "Copyhype", "MUSIC • TECHNOLOGY • POLICY",
+    "Music Industry Blog", "Dotted Music", "Click Track: Music Industry Analysis",
+    "The Guardian", "Rolling Stone", "Variety", "Water & Music", "How Music Charts",
+    "Music 3.0 Music Industry Blog", "The Bag", "The Cadence"
   ]
 }

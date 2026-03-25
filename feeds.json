@@ -34,6 +34,31 @@
       "title": "CMU",
       "xmlUrl": "http://www.thecmuwebsite.com/feed/atom/",
       "htmlUrl": "https://completemusicupdate.com"
+    },
+    {
+      "title": "Rolling Stone",
+      "xmlUrl": "https://www.rollingstone.com/music/music-news/feed/",
+      "htmlUrl": "https://www.rollingstone.com"
+    },
+    {
+      "title": "Variety",
+      "xmlUrl": "https://variety.com/v/music/feed/",
+      "htmlUrl": "https://variety.com"
+    },
+    {
+      "title": "Hypebot",
+      "xmlUrl": "https://www.hypebot.com/feed",
+      "htmlUrl": "https://www.hypebot.com"
+    },
+    {
+      "title": "Water & Music",
+      "xmlUrl": "https://www.waterandmusic.com/feed/",
+      "htmlUrl": "https://www.waterandmusic.com"
+    },
+    {
+      "title": "Ars Technica",
+      "xmlUrl": "https://feeds.arstechnica.com/arstechnica/index",
+      "htmlUrl": "https://arstechnica.com"
     }
   ]
 }

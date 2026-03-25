@@ -39,7 +39,7 @@ export async function fetchFeed(xmlUrl: string, sourceTitle: string, sourceHtmlU
         return {
           title: item.title || 'Untitled',
           link: item.link || '',
-          description: stripHtml(item.contentSnippet || item.content || '').slice(0, 300),
+          description: truncateText(stripHtml(item.contentSnippet || item.content || ''), 300),
           pubDate,
           source: sourceTitle,
           sourceUrl: sourceHtmlUrl,
@@ -81,6 +81,19 @@ export async function fetchAllFeeds(
 
   articles.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
   return articles;
+}
+
+function truncateText(text: string, maxLen: number): string {
+  if (text.length <= maxLen) return text;
+  // Find the last sentence boundary within the limit
+  const truncated = text.slice(0, maxLen);
+  const lastSentence = truncated.search(/[.!?]\s[^.!?]*$/);
+  if (lastSentence > maxLen * 0.5) {
+    return truncated.slice(0, lastSentence + 1);
+  }
+  // Fall back to last word boundary + ellipsis
+  const lastSpace = truncated.lastIndexOf(' ');
+  return (lastSpace > 0 ? truncated.slice(0, lastSpace) : truncated) + '...';
 }
 
 function stripHtml(html: string): string {
