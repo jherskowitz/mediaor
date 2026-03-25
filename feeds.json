@@ -14,6 +14,26 @@
       "title": "Billboard",
       "xmlUrl": "https://www.billboard.com/feed/",
       "htmlUrl": "https://www.billboard.com"
+    },
+    {
+      "title": "Lefsetz Letter",
+      "xmlUrl": "http://lefsetz.com/wordpress/index.php/feed/",
+      "htmlUrl": "https://lefsetz.com"
+    },
+    {
+      "title": "Billboard Pro",
+      "xmlUrl": "https://www.billboard.com/feed/rss/",
+      "htmlUrl": "https://www.billboard.com"
+    },
+    {
+      "title": "Platform & Stream",
+      "xmlUrl": "https://platformstream.substack.com/feed",
+      "htmlUrl": "https://platformstream.substack.com"
+    },
+    {
+      "title": "CMU",
+      "xmlUrl": "http://www.thecmuwebsite.com/feed/atom/",
+      "htmlUrl": "https://completemusicupdate.com"
     }
   ]
 }

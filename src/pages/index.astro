@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CategorySection from '../components/CategorySection.astro';
+import ArticleCard from '../components/ArticleCard.astro';
 import { loadArticles, getArticlesByCategory } from '../lib/data';
 import { getCategories } from '../lib/categories';
 
@@ -8,13 +8,12 @@ const articles = await loadArticles();
 const grouped = getArticlesByCategory(articles);
 const categories = getCategories();
 
-const categoryOrder = [...categories.map((c) => c.slug), 'general'];
 const categoryNames: Record<string, string> = Object.fromEntries(
   categories.map((c) => [c.slug, c.name])
 );
 categoryNames['general'] = 'General';
 
-const activeCategories = categoryOrder.filter((slug) => grouped[slug]?.length > 0);
+const activeCategories = Object.keys(grouped);
 ---
 
 <BaseLayout title="Mediaor — Music & Tech News">
@@ -24,13 +23,21 @@ const activeCategories = categoryOrder.filter((slug) => grouped[slug]?.length > 
     ))}
   </Fragment>
 
-  {activeCategories.map((slug) => (
-    <CategorySection
-      name={categoryNames[slug]}
-      slug={slug}
-      articles={grouped[slug]}
-    />
-  ))}
+  <div class="card-grid">
+    {articles.map((article) => (
+      <ArticleCard
+        title={article.title}
+        link={article.link}
+        description={article.description}
+        pubDate={article.pubDate}
+        source={article.source}
+        sourceUrl={article.sourceUrl}
+        image={article.image}
+        category={article.category}
+        categorySlug={article.categorySlug}
+      />
+    ))}
+  </div>
 
   {articles.length === 0 && (
     <p class="empty">No articles found. Check back soon.</p>
@@ -49,6 +56,12 @@ const activeCategories = categoryOrder.filter((slug) => grouped[slug]?.length > 
 
   .nav-link:hover {
     background: var(--color-bg);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
   }
 
   .empty {

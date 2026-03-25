@@ -7,9 +7,11 @@ interface Props {
   source: string;
   sourceUrl?: string;
   image?: string;
+  category?: string;
+  categorySlug?: string;
 }
 
-const { title, link, description, pubDate, source, sourceUrl, image } = Astro.props;
+const { title, link, description, pubDate, source, sourceUrl, image, category, categorySlug } = Astro.props;
 
 function getFaviconUrl(sourceUrl?: string, articleLink?: string): string {
   try {
@@ -42,6 +44,9 @@ function timeAgo(date: Date): string {
     </div>
   )}
   <div class="card-body">
+    {category && categorySlug && (
+      <a href={`/${categorySlug}`} class={`card-badge badge-${categorySlug}`}>{category}</a>
+    )}
     <a href={link} target="_blank" rel="noopener noreferrer" class="card-title">
       {title}
     </a>
@@ -90,6 +95,24 @@ function timeAgo(date: Date): string {
     gap: 0.5rem;
     flex: 1;
   }
+
+  .card-badge {
+    font-size: 0.675rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    width: fit-content;
+    color: #fff;
+    background: #6b7280;
+  }
+
+  .badge-music-tech { background: #7c3aed; }
+  .badge-music { background: #db2777; }
+  .badge-tech { background: #2563eb; }
+  .badge-industry { background: #d97706; }
+  .badge-general { background: #6b7280; }
 
   .card-title {
     font-size: 1rem;
