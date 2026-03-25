@@ -1,0 +1,67 @@
+---
+import ArticleCard from './ArticleCard.astro';
+import type { CategorizedArticle } from '../lib/categories';
+
+interface Props {
+  name: string;
+  slug: string;
+  articles: CategorizedArticle[];
+  limit?: number;
+}
+
+const { name, slug, articles, limit = 6 } = Astro.props;
+const displayArticles = articles.slice(0, limit);
+const hasMore = articles.length > limit;
+---
+
+<section class="category-section">
+  <div class="category-header">
+    <h2 class="category-title">{name}</h2>
+    {hasMore && <a href={`/${slug}`} class="see-more">See all &rarr;</a>}
+  </div>
+  <div class="card-grid">
+    {displayArticles.map((article) => (
+      <ArticleCard
+        title={article.title}
+        link={article.link}
+        description={article.description}
+        pubDate={article.pubDate}
+        source={article.source}
+        sourceUrl={article.sourceUrl}
+        image={article.image}
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+  .category-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .category-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--color-text);
+    padding-bottom: 0.5rem;
+  }
+
+  .category-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .see-more {
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+</style>

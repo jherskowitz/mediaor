@@ -1,15 +1,59 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategorySection from '../components/CategorySection.astro';
+import { loadArticles, getArticlesByCategory } from '../lib/data';
+import { getCategories } from '../lib/categories';
 
+const articles = await loadArticles();
+const grouped = getArticlesByCategory(articles);
+const categories = getCategories();
+
+const categoryOrder = [...categories.map((c) => c.slug), 'general'];
+const categoryNames: Record<string, string> = Object.fromEntries(
+  categories.map((c) => [c.slug, c.name])
+);
+categoryNames['general'] = 'General';
+
+const activeCategories = categoryOrder.filter((slug) => grouped[slug]?.length > 0);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Mediaor</title>
-  </head>
-  <body>
-    <h1>Mediaor</h1>
-  </body>
-</html>
+<BaseLayout title="Mediaor — Music & Tech News">
+  <Fragment slot="nav">
+    {activeCategories.map((slug) => (
+      <a href={`/${slug}`} class="nav-link">{categoryNames[slug]}</a>
+    ))}
+  </Fragment>
+
+  {activeCategories.map((slug) => (
+    <CategorySection
+      name={categoryNames[slug]}
+      slug={slug}
+      articles={grouped[slug]}
+    />
+  ))}
+
+  {articles.length === 0 && (
+    <p class="empty">No articles found. Check back soon.</p>
+  )}
+</BaseLayout>
+
+<style>
+  .nav-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+
+  .nav-link:hover {
+    background: var(--color-bg);
+  }
+
+  .empty {
+    text-align: center;
+    padding: 4rem;
+    color: var(--color-text-secondary);
+  }
+</style>
