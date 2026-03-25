@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { loadArticles, getArticlesByCategory } from '../lib/data';
+import { getCategories, getAllCategorySlugs } from '../lib/categories';
+
+export async function getStaticPaths() {
+  const articles = await loadArticles();
+  const grouped = getArticlesByCategory(articles);
+  const categories = getCategories();
+  const categoryNames: Record<string, string> = Object.fromEntries(
+    categories.map((c) => [c.slug, c.name])
+  );
+  categoryNames['general'] = 'General';
+
+  return getAllCategorySlugs()
+    .filter((slug) => grouped[slug]?.length > 0)
+    .map((slug) => ({
+      params: { category: slug },
+      props: {
+        name: categoryNames[slug],
+        articles: grouped[slug],
+        allSlugs: Object.keys(grouped),
+        categoryNames,
+      },
+    }));
+}
+
+const { name, articles, allSlugs, categoryNames } = Astro.props;
+---
+
+<BaseLayout title={`${name} — Mediaor`}>
+  <Fragment slot="nav">
+    {allSlugs.map((slug: string) => (
+      <a
+        href={`/${slug}`}
+        class:list={['nav-link', { active: slug === Astro.params.category }]}
+      >
+        {categoryNames[slug]}
+      </a>
+    ))}
+  </Fragment>
+
+  <h1 class="page-title">{name}</h1>
+  <div class="card-grid">
+    {articles.map((article: any) => (
+      <ArticleCard
+        title={article.title}
+        link={article.link}
+        description={article.description}
+        pubDate={article.pubDate}
+        source={article.source}
+        sourceUrl={article.sourceUrl}
+        image={article.image}
+      />
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-text);
+    padding-bottom: 0.5rem;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .nav-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+
+  .nav-link:hover {
+    background: var(--color-bg);
+  }
+
+  .nav-link.active {
+    background: var(--color-text);
+    color: var(--color-surface);
+  }
+</style>
