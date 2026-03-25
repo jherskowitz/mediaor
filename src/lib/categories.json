@@ -1,0 +1,24 @@
+{
+  "categories": [
+    {
+      "name": "Music Tech",
+      "slug": "music-tech",
+      "keywords": ["music tech", "audio tech", "DAW", "plugin", "synth", "synthesizer", "MIDI", "audio software", "music software", "music app", "soundboard", "audio engineering", "music production", "beat making", "sampling"]
+    },
+    {
+      "name": "Music",
+      "slug": "music",
+      "keywords": ["music", "album", "song", "artist", "tour", "concert", "vinyl", "playlist", "label", "record label", "streaming", "Spotify", "Grammy", "rapper", "singer", "band", "musician", "lyric", "remix", "DJ", "festival", "hip-hop", "rock", "pop music", "jazz", "R&B", "country music", "punk"]
+    },
+    {
+      "name": "Tech",
+      "slug": "tech",
+      "keywords": ["AI", "artificial intelligence", "software", "startup", "app", "data", "cloud", "chip", "robot", "gadget", "developer", "coding", "blockchain", "crypto", "API", "machine learning", "algorithm", "open source", "SaaS", "platform"]
+    },
+    {
+      "name": "Industry",
+      "slug": "industry",
+      "keywords": ["market", "deal", "merger", "revenue", "CEO", "funding", "IPO", "earnings", "layoff", "acquisition", "valuation", "investor", "stock", "quarterly", "profit", "lawsuit", "regulation", "copyright", "licensing", "royalt"]
+    }
+  ]
+}
