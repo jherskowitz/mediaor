@@ -16,12 +16,12 @@ import '../styles/global.css';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
   </head>
   <body>
     <header class="site-header">
       <div class="header-inner">
-        <a href="/" class="logo">Mediaor</a>
+        <a href="/" class="logo"><img src="/logo.png" alt="Mediaor" class="logo-img" /></a>
         <nav class="nav" id="category-nav">
           <slot name="nav" />
         </nav>
@@ -31,7 +31,7 @@ import '../styles/global.css';
       <slot />
     </main>
     <footer class="site-footer">
-      <p>Powered by Mediaor</p>
+      <p>Forged in the <a href="https://meddleshop.com" target="_blank" rel="noopener noreferrer" class="footer-link">Meddle Shop</a></p>
     </footer>
   </body>
 </html>
@@ -55,9 +55,13 @@ import '../styles/global.css';
   }
 
   .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-img {
+    height: 36px;
+    width: auto;
   }
 
   .nav {
@@ -79,5 +83,10 @@ import '../styles/global.css';
     text-align: center;
     color: var(--color-text-secondary);
     font-size: 0.875rem;
+  }
+
+  .footer-link {
+    color: var(--color-accent);
+    font-weight: 500;
   }
 </style>

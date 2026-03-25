@@ -9,7 +9,19 @@ interface Props {
   image?: string;
 }
 
-const { title, link, description, pubDate, source, image } = Astro.props;
+const { title, link, description, pubDate, source, sourceUrl, image } = Astro.props;
+
+function getFaviconUrl(sourceUrl?: string, articleLink?: string): string {
+  try {
+    const url = sourceUrl || articleLink || '';
+    const domain = new URL(url).hostname;
+    return `https://www.google.com/s2/favicons?domain=${domain}&sz=16`;
+  } catch {
+    return '';
+  }
+}
+
+const faviconUrl = getFaviconUrl(sourceUrl, link);
 
 function timeAgo(date: Date): string {
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
@@ -35,7 +47,10 @@ function timeAgo(date: Date): string {
     </a>
     <p class="card-description">{description}</p>
     <div class="card-meta">
-      <span class="card-source">{source}</span>
+      <span class="card-source">
+        {faviconUrl && <img src={faviconUrl} alt="" class="source-favicon" loading="lazy" />}
+        {source}
+      </span>
       <span class="card-time">{timeAgo(pubDate)}</span>
     </div>
   </div>
@@ -80,19 +95,11 @@ function timeAgo(date: Date): string {
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   .card-description {
     font-size: 0.875rem;
     color: var(--color-text-secondary);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   .card-meta {
@@ -105,5 +112,14 @@ function timeAgo(date: Date): string {
 
   .card-source {
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .source-favicon {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
   }
 </style>
