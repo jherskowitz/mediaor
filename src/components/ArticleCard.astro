@@ -1,0 +1,109 @@
+---
+interface Props {
+  title: string;
+  link: string;
+  description: string;
+  pubDate: Date;
+  source: string;
+  sourceUrl?: string;
+  image?: string;
+}
+
+const { title, link, description, pubDate, source, image } = Astro.props;
+
+function timeAgo(date: Date): string {
+  const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (seconds < 60) return 'just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+---
+
+<article class="card">
+  {image && (
+    <div class="card-image">
+      <img src={image} alt="" loading="lazy" />
+    </div>
+  )}
+  <div class="card-body">
+    <a href={link} target="_blank" rel="noopener noreferrer" class="card-title">
+      {title}
+    </a>
+    <p class="card-description">{description}</p>
+    <div class="card-meta">
+      <span class="card-source">{source}</span>
+      <span class="card-time">{timeAgo(pubDate)}</span>
+    </div>
+  </div>
+</article>
+
+<style>
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.15s;
+  }
+
+  .card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .card-image {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-border);
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-description {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-meta {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .card-source {
+    font-weight: 500;
+  }
+</style>
