@@ -15,9 +15,17 @@ const parser = new Parser({
   headers: {
     'User-Agent': 'Mediaor/1.0 (news aggregator)',
   },
+  customFields: {
+    item: [
+      ['media:content', 'mediaContent', { keepArray: false }],
+      ['media:thumbnail', 'mediaThumbnail', { keepArray: false }],
+      ['media:group', 'mediaGroup', { keepArray: false }],
+      ['itunes:image', 'itunesImage', { keepArray: false }],
+    ],
+  },
 });
 
-const SEVENTY_TWO_HOURS = 72 * 60 * 60 * 1000;
+const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 
 export async function fetchFeed(xmlUrl: string, sourceTitle: string, sourceHtmlUrl?: string): Promise<Article[]> {
   try {
@@ -38,7 +46,7 @@ export async function fetchFeed(xmlUrl: string, sourceTitle: string, sourceHtmlU
           image: extractImage(item),
         };
       })
-      .filter((a) => a.link && now - a.pubDate.getTime() < SEVENTY_TWO_HOURS);
+      .filter((a) => a.link && now - a.pubDate.getTime() < SEVEN_DAYS);
   } catch (err) {
     console.warn(`Failed to fetch ${sourceTitle} (${xmlUrl}): ${(err as Error).message}`);
     return [];
@@ -75,9 +83,32 @@ function stripHtml(html: string): string {
 }
 
 function extractImage(item: any): string | undefined {
+  // 1. enclosure with image type
   if (item.enclosure?.url && item.enclosure.type?.startsWith('image')) {
     return item.enclosure.url;
   }
-  const imgMatch = (item.content || item['content:encoded'] || '').match(/<img[^>]+src="([^"]+)"/);
-  return imgMatch?.[1] || undefined;
+
+  // 2. media:content or media:thumbnail (common in RSS feeds)
+  const mediaUrl =
+    item.mediaContent?.['$']?.url ||
+    item.mediaThumbnail?.['$']?.url ||
+    item.mediaGroup?.['media:content']?.['$']?.url ||
+    item.mediaGroup?.['media:thumbnail']?.['$']?.url;
+  if (mediaUrl) return mediaUrl;
+
+  // 3. itunes:image (podcast/music feeds)
+  const itunesUrl = item.itunesImage?.['$']?.href;
+  if (itunesUrl) return itunesUrl;
+
+  // 4. enclosure without type check (some feeds omit type)
+  if (item.enclosure?.url && /\.(jpg|jpeg|png|gif|webp)/i.test(item.enclosure.url)) {
+    return item.enclosure.url;
+  }
+
+  // 5. First img tag in content
+  const content = item.content || item['content:encoded'] || '';
+  const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/);
+  if (imgMatch?.[1]) return imgMatch[1];
+
+  return undefined;
 }
