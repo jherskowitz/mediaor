@@ -59,6 +59,11 @@
       "title": "Ars Technica",
       "xmlUrl": "https://feeds.arstechnica.com/arstechnica/index",
       "htmlUrl": "https://arstechnica.com"
+    },
+    {
+      "title": "MusicX",
+      "xmlUrl": "https://musicx.substack.com/feed",
+      "htmlUrl": "https://musicx.substack.com"
     }
   ]
 }
