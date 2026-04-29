@@ -27,7 +27,29 @@ const parser = new Parser({
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 
-export async function fetchFeed(xmlUrl: string, sourceTitle: string, sourceHtmlUrl?: string): Promise<Article[]> {
+export interface FeedFilters {
+  include?: string[];
+  exclude?: string[];
+}
+
+function matchesFilters(article: Article, filters?: FeedFilters): boolean {
+  if (!filters) return true;
+  const haystack = `${article.title} ${article.description}`.toLowerCase();
+  if (filters.include && filters.include.length > 0) {
+    if (!filters.include.some((kw) => haystack.includes(kw.toLowerCase()))) return false;
+  }
+  if (filters.exclude && filters.exclude.length > 0) {
+    if (filters.exclude.some((kw) => haystack.includes(kw.toLowerCase()))) return false;
+  }
+  return true;
+}
+
+export async function fetchFeed(
+  xmlUrl: string,
+  sourceTitle: string,
+  sourceHtmlUrl?: string,
+  filters?: FeedFilters
+): Promise<Article[]> {
   try {
     const feed = await parser.parseURL(xmlUrl);
     const now = Date.now();
@@ -46,7 +68,7 @@ export async function fetchFeed(xmlUrl: string, sourceTitle: string, sourceHtmlU
           image: extractImage(item),
         };
       })
-      .filter((a) => a.link && now - a.pubDate.getTime() < SEVEN_DAYS);
+      .filter((a) => a.link && now - a.pubDate.getTime() < SEVEN_DAYS && matchesFilters(a, filters));
   } catch (err) {
     console.warn(`Failed to fetch ${sourceTitle} (${xmlUrl}): ${(err as Error).message}`);
     return [];
@@ -54,7 +76,7 @@ export async function fetchFeed(xmlUrl: string, sourceTitle: string, sourceHtmlU
 }
 
 export async function fetchAllFeeds(
-  feeds: { title: string; xmlUrl: string; htmlUrl?: string }[]
+  feeds: { title: string; xmlUrl: string; htmlUrl?: string; include?: string[]; exclude?: string[] }[]
 ): Promise<Article[]> {
   const articles: Article[] = [];
   const seenUrls = new Set<string>();
@@ -64,7 +86,7 @@ export async function fetchAllFeeds(
   for (let i = 0; i < feeds.length; i += BATCH_SIZE) {
     const batch = feeds.slice(i, i + BATCH_SIZE);
     const results = await Promise.allSettled(
-      batch.map((f) => fetchFeed(f.xmlUrl, f.title, f.htmlUrl))
+      batch.map((f) => fetchFeed(f.xmlUrl, f.title, f.htmlUrl, { include: f.include, exclude: f.exclude }))
     );
 
     for (const result of results) {

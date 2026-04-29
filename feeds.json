@@ -58,7 +58,8 @@
     {
       "title": "Ars Technica",
       "xmlUrl": "https://feeds.arstechnica.com/arstechnica/index",
-      "htmlUrl": "https://arstechnica.com"
+      "htmlUrl": "https://arstechnica.com",
+      "include": ["music"]
     },
     {
       "title": "MusicX",

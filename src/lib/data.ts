@@ -8,7 +8,15 @@ function loadFeedsJson(jsonPath: string): FeedSource[] {
   if (!existsSync(jsonPath)) return [];
   try {
     const data = JSON.parse(readFileSync(jsonPath, 'utf-8'));
-    return (data.feeds || []).filter((f: any) => f.xmlUrl);
+    return (data.feeds || [])
+      .filter((f: any) => f.xmlUrl)
+      .map((f: any) => ({
+        title: f.title,
+        xmlUrl: f.xmlUrl,
+        htmlUrl: f.htmlUrl,
+        include: Array.isArray(f.include) ? f.include : undefined,
+        exclude: Array.isArray(f.exclude) ? f.exclude : undefined,
+      }));
   } catch {
     console.warn('Failed to parse feeds.json');
     return [];
@@ -37,6 +45,19 @@ export async function loadArticles(): Promise<CategorizedArticle[]> {
   }
 
   console.log(`Fetching from ${feeds.length} feeds (${opmlFeeds.length} OPML + ${jsonFeeds.length} JSON)...`);
+
+  // Merge filters from JSON feeds onto matching feeds (by xmlUrl) so OPML duplicates inherit them
+  const filterByUrl = new Map<string, { include?: string[]; exclude?: string[] }>();
+  for (const f of jsonFeeds) {
+    if (f.include || f.exclude) filterByUrl.set(f.xmlUrl, { include: f.include, exclude: f.exclude });
+  }
+  for (const f of feeds) {
+    const filters = filterByUrl.get(f.xmlUrl);
+    if (filters) {
+      f.include = filters.include;
+      f.exclude = filters.exclude;
+    }
+  }
 
   const articles = await fetchAllFeeds(feeds);
   console.log(`Fetched ${articles.length} articles`);

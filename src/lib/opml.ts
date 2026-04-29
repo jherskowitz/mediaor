@@ -6,6 +6,8 @@ export interface FeedSource {
   title: string;
   xmlUrl: string;
   htmlUrl?: string;
+  include?: string[];
+  exclude?: string[];
 }
 
 export function parseOpml(opmlPath: string, folderName: string): FeedSource[] {
