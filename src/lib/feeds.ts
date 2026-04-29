@@ -68,7 +68,14 @@ export async function fetchFeed(
           image: extractImage(item),
         };
       })
-      .filter((a) => a.link && now - a.pubDate.getTime() < SEVEN_DAYS && matchesFilters(a, filters));
+      .filter((a) => {
+        if (!a.link) return false;
+        const age = now - a.pubDate.getTime();
+        // Drop future-dated (scheduled/embargoed) items until their publish time arrives,
+        // and items older than the freshness window.
+        if (age < 0 || age >= SEVEN_DAYS) return false;
+        return matchesFilters(a, filters);
+      });
   } catch (err) {
     console.warn(`Failed to fetch ${sourceTitle} (${xmlUrl}): ${(err as Error).message}`);
     return [];
